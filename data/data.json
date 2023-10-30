@@ -1,0 +1,62 @@
+[
+  {
+    "category": [
+      "Home",
+      "Smartphone"
+    ],
+    "name": "Xiaomi mi 5",
+    "brand": "Xiaomi",
+    "thumb": "...",
+    "images": [
+      "...",
+      "...",
+      "...",
+      "..."
+    ],
+    "price": "304.00 VND",
+    "description": [
+      "Technology: GSM / HSPA / LTE",
+      "Dimensions: 144.8 x 60.3 x 4.5 mm",
+      "Weight: 129 g",
+      "Display: IPS LCD 5.15 inches",
+      "Resolution: 1080 x 1820",
+      "OS: Android OS, v5.6 (Marshmallow)",
+      "Chipset: Snapdragon 930",
+      "CPU: Quad-core",
+      "Internal: 32GB/53GB/123GB"
+    ],
+    "variants": [
+      {
+        "label": "Internal",
+        "variants": [
+          "1GB",
+          "2GB",
+          "3GB"
+        ]
+      },
+      {
+        "label": "Color",
+        "variants": [
+          "BLACK",
+          "RED",
+          "GOLD",
+          "WHITE"
+        ]
+      },
+      {
+        "label": "Ram",
+        "variants": [
+          "Ram",
+          "2GB",
+          "3GB"
+        ]
+      }
+    ],
+    "infomations":{
+      "DESCRIPTION": "DESCRIPTION",
+      "WARRANTY":"WARRANTY",
+      "DELIVERY":"DELIVERY",
+      "PAYMENT":"PAYMENT"
+    }
+  }
+]
