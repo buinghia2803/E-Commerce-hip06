@@ -6,7 +6,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      main : ['Poppins', 'sans-serif']
+      main: ['Poppins', 'sans-serif']
     },
     extend: {
       width: {
@@ -20,5 +20,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    // require('@tailwindcss/line-clamp'),
+  ],
 }
