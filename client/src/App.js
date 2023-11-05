@@ -1,8 +1,8 @@
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Login, Home, Public } from './pages/public';
 import path from './ultils/path';
-import {getCategories} from './store/asyncActions'
+import { getCategories } from './store/app/asyncActions'
 import { useDispatch } from "react-redux";
 
 function App() {
