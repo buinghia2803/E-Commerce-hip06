@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { formatMoney, renderStarFromNumber } from '../ultils/helpers'
 import trending from '../assets/trending.png'
 import label from '../assets/new.png'
 import SelectOption from './SelectOption'
 import icons from '../ultils/icons'
+import { Link } from "react-router-dom";
+import path from '../ultils/path'
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons
 
@@ -11,16 +13,17 @@ const Product = ({ productData, isNew }) => {
   const [iShowOption, setIShowOption] = useState(false)
   return (
     <div className='w-full text-base px-[10px]'>
-      <div 
-      onMouseEnter={e => {
-        e.stopPropagation()
-        setIShowOption(true)
-      }}
-      onMouseLeave={e => {
-        e.stopPropagation()
-        setIShowOption(false)
-      }}
-      className='w-full border p-[15px] flex flex-col items-center'
+      <Link
+        onMouseEnter={e => {
+          e.stopPropagation()
+          setIShowOption(true)
+        }}
+        onMouseLeave={e => {
+          e.stopPropagation()
+          setIShowOption(false)
+        }}
+        className='w-full border p-[15px] flex flex-col items-center'
+        to={`/${path.DETAIL_PRODUCT}/${productData?._id}/${productData.title}`}
       >
         <div className='w-full relative'>
           {iShowOption && <div className='absolute bottom-[-10px] flex left-0 right-0 justify-center gap-2 animate-slide-top'>
@@ -42,7 +45,7 @@ const Product = ({ productData, isNew }) => {
           <span className='line-clamp-1'>{productData?.title}</span>
           <span>{`${formatMoney(productData?.price)} VND`}</span>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }
