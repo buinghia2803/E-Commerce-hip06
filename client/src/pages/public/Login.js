@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react'
 import { InputField, Button } from '../../components'
-import { apiRegister, apiLogin } from '../../apis/user'
+import { apiRegister, apiLogin, apiForgotPassword } from '../../apis/user'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import path from '../../ultils/path'
 import { register } from "../../store/user/userSlice";
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -18,6 +19,7 @@ const Login = () => {
     mobile: ''
   })
   const [isRegister, setIsRegister] = useState(false)
+  const [isForgotPassword, setIsForgotPassword] = useState(false)
   const resetPayload = () => {
     setPayload({
       email: '',
@@ -26,6 +28,13 @@ const Login = () => {
       lastname: '',
       mobile: ''
     })
+  }
+  const [email, setEmail] = useState('')
+  const handleForgotPassword = async () => {
+    const response = await apiForgotPassword({ email })
+    if (response.success) {
+      toast.success(response.mes, { theme: 'colored' })
+    } else toast.info(response.mes, { theme: 'colored' })
   }
   const handleSubmit = useCallback(async () => {
     const { firstname, lastname, mobile, ...data } = payload
@@ -49,6 +58,31 @@ const Login = () => {
 
   return (
     <div className='w-screen h-screen relative'>
+      {isForgotPassword && <div className='absolute animate-slide-right top-0 left-0 bottom-0 right-0 bg-white flex flex-col items-center py-8 z-50'>
+        <div className='flex flex-col gap-4'>
+          <label htmlFor="email">Enter your email</label>
+          <input
+            type="text"
+            id='email'
+            className='w-[800px] pb-2 border-b outline-none placeholder:text-sm'
+            placeholder='Exp: email@gmail.com'
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <div className='flex items-center justify-end w-full gap-4'>
+            <Button
+              name='Submit'
+              handleOnClick={handleForgotPassword}
+              style='px-4 py-2 my-2 rounded-md text-white bg-blue-500 text-semibold'
+
+            />
+            <Button
+              name='Back'
+              handleOnClick={() => setIsForgotPassword(false)}
+            />
+          </div>
+        </div>
+      </div>}
       <img
         src=""
         alt=""
@@ -91,7 +125,7 @@ const Login = () => {
             fw
           />
           <div className='flex items-center justify-between w-full text-sm my-2'>
-            {!isRegister && <span className='text-blue-500 hover:underline cursor-pointer'>Forgot acc</span>}
+            {!isRegister && <span onClick={() => setIsForgotPassword(true)} className='text-blue-500 hover:underline cursor-pointer'>Forgot acc</span>}
             {!isRegister && <span
               className='text-blue-500 hover:underline cursor-pointer'
               onClick={() => setIsRegister(true)}
