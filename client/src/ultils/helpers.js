@@ -60,3 +60,5 @@ export const validate = (payload, setInvalidFields) => {
 
   return invalids
 }
+
+export const fotmatPrice = number => Math.round(number / 1000) * 1000

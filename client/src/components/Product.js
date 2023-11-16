@@ -9,7 +9,7 @@ import path from '../ultils/path'
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons
 
-const Product = ({ productData, isNew }) => {
+const Product = ({ productData, isNew, normal }) => {
   const [iShowOption, setIShowOption] = useState(false)
   return (
     <div className='w-full text-base px-[10px]'>
@@ -23,7 +23,7 @@ const Product = ({ productData, isNew }) => {
           setIShowOption(false)
         }}
         className='w-full border p-[15px] flex flex-col items-center'
-        to={`/${path.DETAIL_PRODUCT}/${productData?._id}/${productData.title}`}
+        to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData.title}`}
       >
         <div className='w-full relative'>
           {iShowOption && <div className='absolute bottom-[-10px] flex left-0 right-0 justify-center gap-2 animate-slide-top'>
@@ -36,7 +36,7 @@ const Product = ({ productData, isNew }) => {
             alt=""
             className='w-[274px] h-[274px] object-cover'
           />
-          <img src={isNew ? label : trending} alt="" className={`absolute w-[100px] h-[35px] top-0 right-0 object-cover`} />
+          {!normal && <img src={isNew ? label : trending} alt="" className={`absolute w-[100px] h-[35px] top-0 right-0 object-cover`} />}
         </div>
         <div className='flex flex-col gap-1 mt-[15px] items-start w-full'>
           <span className='flex h-4'>{renderStarFromNumber(productData?.totalRatings)?.map((el, index) => (
