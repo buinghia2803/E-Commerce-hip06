@@ -80,7 +80,7 @@ const DetailProduct = () => {
             <Slider className='image-slider flex gap-2 justify-between' {...settings}>
               {product?.images?.map(el => (
                 <div key={el} className='flex-1'>
-                  <img src={el} alt="sub-product" className='border h-[143px] w-[143px] object-contain' />
+                  <img src={el} alt="sub-product" className='border h-[143px] w-[143px] object-cover' />
                 </div>
               ))}
             </Slider>
