@@ -13,6 +13,7 @@ export const renderStarFromNumber = (number, size) => {
   // 4 => [1,1,1,1,0]
   // 2 => [1,1,0,0,0]
   const stars = []
+  number = Math.round(number)
   for (let i = 0; i < +number; i++) stars.push(<AiFillStar size={size || 16} color="orange" />)
   for (let i = 5; i > +number; i--) stars.push(<AiOutlineStar size={size || 16} color="orange" />)
 

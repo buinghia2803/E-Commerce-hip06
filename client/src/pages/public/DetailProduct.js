@@ -19,12 +19,17 @@ var settings = {
 const DetailProduct = () => {
   const { pid, title, category } = useParams()
   const [product, setProduct] = useState(null)
+  const [currentImage, setCurrentImage] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [relateProducts, setRelateProducts] = useState(null)
+  const [update, setUpdate] = useState(false)
 
   const fetchProductData = async () => {
     const response = await apiGetProduct(pid)
-    if (response.success) setProduct(response?.productData)
+    if (response.success) {
+      setProduct(response?.productData)
+      setCurrentImage(response?.productData?.thumb)
+    }
   }
   const fetchProducts = async () => {
     const response = await apiGetProducts({ category })
@@ -36,7 +41,16 @@ const DetailProduct = () => {
       fetchProductData()
       fetchProducts()
     }
+    window.scrollTo(0, 0)
   }, [pid])
+
+  useEffect(() => {
+    if (pid) fetchProductData()
+  }, [update])
+
+  const rerender = useCallback(() => {
+    setUpdate(!update)
+  }, [update])
 
   const handleQuantity = useCallback((number) => {
     if (!Number(number) || Number(number) < 1) {
@@ -52,6 +66,11 @@ const DetailProduct = () => {
     if (flag === 'plus') setQuantity(prev => +prev + 1)
   }, [quantity])
 
+  const handleClickImage = (e, el) => {
+    e.stopPropagation()
+    setCurrentImage(el)
+  }
+
   return (
     <div className='w-full'>
       <div className='h-[81px] flex items-center justify-center bg-gray-100'>
@@ -62,15 +81,15 @@ const DetailProduct = () => {
       </div>
       <div className='w-main m-auto mt-4 flex'>
         <div className='flex flex-col gap-4 w-2/5'>
-          <div className='h-[458px] w-[458px] border'>
+          <div className='h-[458px] w-[458px] border overflow-hidden'>
             <ReactImageMagnify {...{
               smallImage: {
                 alt: 'Wristwatch by Ted Baker London',
                 isFluidWidth: true,
-                src: product?.thumb
+                src: currentImage
               },
               largeImage: {
-                src: product?.thumb,
+                src: currentImage,
                 width: 1800,
                 height: 1500
               }
@@ -80,7 +99,7 @@ const DetailProduct = () => {
             <Slider className='image-slider flex gap-2 justify-between' {...settings}>
               {product?.images?.map(el => (
                 <div key={el} className='flex-1'>
-                  <img src={el} alt="sub-product" className='border h-[143px] w-[143px] object-cover' />
+                  <img onClick={e => handleClickImage(e, el)} src={el} alt="sub-product" className='cursor-pointer border h-[143px] w-[143px] object-cover' />
                 </div>
               ))}
             </Slider>
@@ -124,11 +143,17 @@ const DetailProduct = () => {
         </div>
       </div>
       <div className='w-main m-auto mt-8'>
-        <ProductInformation />
+        <ProductInformation
+          totalRatings={product?.totalRatings}
+          ratings={product?.ratings}
+          nameProduct={product?.title}
+          pid={product?._id}
+          rerender={rerender}
+        />
       </div>
       <div className='w-main m-auto mt-8'>
         <h3 className='text-[20px] font-semibold py-[15px] border-b-2 border-main'>OTHER CUSTOMERS ALSO BUY</h3>
-        <CustomSlider normal={true} products={relateProducts}/>
+        <CustomSlider normal={true} products={relateProducts} />
       </div>
       <div className='h-[100px] w-full'></div>
     </div>
