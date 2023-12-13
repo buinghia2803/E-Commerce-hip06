@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { InputField, Button } from 'components'
+import { InputField, Button, Loading } from 'components'
 import { apiRegister, apiLogin, apiForgotPassword, apiFinalRegister } from 'apis/user'
 import Swal from 'sweetalert2'
 import { useNavigate, Link } from 'react-router-dom'
 import path from 'ultils/path'
 import { login } from "store/user/userSlice";
+import { showModal } from 'store/app/appSlice'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { validate } from 'ultils/helpers'
@@ -52,7 +53,9 @@ const Login = () => {
     const invalids = isRegister ? validate(payload, setInvalidFields) : validate(data, setInvalidFields)
     if (invalids === 0) {
       if (isRegister) {
+        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
         const response = await apiRegister(payload)
+        dispatch(showModal({isShowModal: false, modalChildren: null}))
         if (response.success) {
           setIsVerifiedEmail(true)
         } else Swal.fire('Oops!', response.mes, 'error')

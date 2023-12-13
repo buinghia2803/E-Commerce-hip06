@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { formatMoney, renderStarFromNumber } from '../ultils/helpers'
-import trending from '../assets/trending.png'
-import label from '../assets/new.png'
-import SelectOption from './SelectOption'
-import icons from '../ultils/icons'
+import { formatMoney, renderStarFromNumber } from 'ultils/helpers'
+import trending from 'assets/trending.png'
+import label from 'assets/new.png'
+import SelectOption from 'components/search/SelectOption'
+import icons from 'ultils/icons'
 import { Link } from "react-router-dom";
-import path from '../ultils/path'
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons
 

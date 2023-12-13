@@ -1,5 +1,5 @@
 import React from 'react'
-import { navigation } from "../ultils/contants";
+import { navigation } from "../../ultils/contants";
 import { NavLink } from 'react-router-dom';
 
 const Navigation = () => {
@@ -9,7 +9,7 @@ const Navigation = () => {
         <NavLink
           to={el.path}
           key={el.id}
-          className={({isActive}) => isActive ? 'pr-12 hover:text-main text-main' : 'pr-12 hover:text-main'}
+          className={({ isActive }) => isActive ? 'pr-12 hover:text-main text-main' : 'pr-12 hover:text-main'}
         >
           {el.value}
         </NavLink>
