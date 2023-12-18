@@ -187,20 +187,20 @@ export const adminSidebar = [
     type: 'SINGLE',
     text: 'Dashboard',
     path: `/${path.ADMIN}/${path.DASHBOARD}`,
-    icon: <AiOutlineDashboard size={20}/>
+    icon: <AiOutlineDashboard size={20} />
   },
   {
     id: 2,
     type: 'SINGLE',
     text: 'Manage users',
     path: `/${path.ADMIN}/${path.MANAGE_USER}`,
-    icon: <MdGroups size={20}/>
+    icon: <MdGroups size={20} />
   },
   {
     id: 3,
     type: 'PARENT',
     text: 'Manage products',
-    icon: <TbBrandProducthunt size={20}/>,
+    icon: <TbBrandProducthunt size={20} />,
     submenu: [
       {
         text: 'Create product',
@@ -217,6 +217,28 @@ export const adminSidebar = [
     type: 'SINGLE',
     text: 'Manage orders',
     path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,
-    icon: <RiBillLine size={20}/>
+    icon: <RiBillLine size={20} />
+  },
+]
+
+export const roles = [
+  {
+    code: 1945,
+    value: 'Admin'
+  },
+  {
+    code: 1979,
+    value: 'User'
+  },
+]
+
+export const blockStatus = [
+  {
+    code: true,
+    value: 'Block'
+  },
+  {
+    code: false,
+    value: 'Active'
   },
 ]
