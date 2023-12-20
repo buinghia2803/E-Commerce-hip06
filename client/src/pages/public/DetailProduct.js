@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import ReactImageMagnify from 'react-image-magnify';
 import { fotmatPrice, formatMoney, renderStarFromNumber } from '../../ultils/helpers';
 import { productExtraInformation } from '../../ultils/contants';
+import DOMPurify from 'dompurify';
 
 var settings = {
   dots: false,
@@ -81,7 +82,7 @@ const DetailProduct = () => {
       </div>
       <div className='w-main m-auto mt-4 flex'>
         <div className='flex flex-col gap-4 w-2/5'>
-          <div className='h-[458px] w-[458px] border overflow-hidden'>
+          <div className='h-[458px] w-[458px] border flex items-center overflow-hidden'>
             <ReactImageMagnify {...{
               smallImage: {
                 alt: 'Wristwatch by Ted Baker London',
@@ -115,7 +116,8 @@ const DetailProduct = () => {
             <span className='text-sm text-main italic'>{`(Da ban: ${product?.sold} cai)`}</span>
           </div>
           <ul className='list-square text-sm text-gray-500 pl-4'>
-            {product?.description?.map((el, index) => (<li className='leading-6' key={index}>{el}</li>))}
+            {product?.description?.length > 1 && product?.description?.map((el, index) => (<li className='leading-6' key={index}>{el}</li>))}
+            {product?.description?.length === 1 && <div className='text-sm line-clamp-[10] mb-8' dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(product?.description[0])}}></div>}
           </ul>
           <div className='flex flex-col gap-8'>
             <div className='flex items-center gap-4'>
