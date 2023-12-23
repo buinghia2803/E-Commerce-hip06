@@ -70,10 +70,10 @@ const CreateProducts = () => {
       if (finalPayload.images) {
         for (let image of finalPayload.images) formData.append('images', image)
       }
-    dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
+      dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }))
       const response = await apiCreateProduct(formData)
-      dispatch(showModal({isShowModal: false, modalChildren: null}))
-      if(response.success){
+      dispatch(showModal({ isShowModal: false, modalChildren: null }))
+      if (response.success) {
         toast.success(response.mes)
         reset()
         setPayload({
