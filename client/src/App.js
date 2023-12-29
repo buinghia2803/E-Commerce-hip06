@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Modal } from 'components';
 
 import { AdminLayout, ManageOrder, CreateProducts, ManageProducts, ManageUser, Dashboard } from 'pages/admin';
-import { MemberLayout, Personal } from 'pages/member';
+import { MemberLayout, Personal, History, MyCart, Wishlist } from 'pages/member';
 
 function App() {
   const dispatch = useDispatch()
@@ -40,6 +40,9 @@ function App() {
         </Route>
         <Route path={path.MEMBER} element={<MemberLayout />}>
           <Route path={path.PERSONAL} element={<Personal />} />
+          <Route path={path.MY_CART} element={<MyCart />} />
+          <Route path={path.WISHLIST} element={<Wishlist />} />
+          <Route path={path.HISTORY} element={<History />} />
         </Route>
         <Route path={path.FINAL_REGISTER} element={<FinalRegister />}></Route>
         <Route path={path.LOGIN} element={<Login />}></Route>
