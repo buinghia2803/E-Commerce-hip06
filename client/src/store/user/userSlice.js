@@ -25,7 +25,8 @@ export const userSlice = createSlice({
     },
     clearMessage: (state) => {
       state.mes = ''
-    }
+    },
+    
   },
   extraReducers: (builder) => {
     builder.addCase(actions.getCurrent.pending, (state) => {

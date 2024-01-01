@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { InputField, Button, Loading } from 'components'
 import { apiRegister, apiLogin, apiForgotPassword, apiFinalRegister } from 'apis/user'
 import Swal from 'sweetalert2'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import path from 'ultils/path'
 import { login } from "store/user/userSlice";
 import { showModal } from 'store/app/appSlice'
@@ -24,6 +24,7 @@ const Login = () => {
   const [invalidFields, setInvalidFields] = useState([])
   const [isRegister, setIsRegister] = useState(false)
   const [isForgotPassword, setIsForgotPassword] = useState(false)
+  const [searchParams] = useSearchParams()
   const resetPayload = () => {
     setPayload({
       email: '',
@@ -53,9 +54,9 @@ const Login = () => {
     const invalids = isRegister ? validate(payload, setInvalidFields) : validate(data, setInvalidFields)
     if (invalids === 0) {
       if (isRegister) {
-        dispatch(showModal({isShowModal: true, modalChildren: <Loading />}))
+        dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }))
         const response = await apiRegister(payload)
-        dispatch(showModal({isShowModal: false, modalChildren: null}))
+        dispatch(showModal({ isShowModal: false, modalChildren: null }))
         if (response.success) {
           setIsVerifiedEmail(true)
         } else Swal.fire('Oops!', response.mes, 'error')
@@ -63,7 +64,7 @@ const Login = () => {
         const rs = await apiLogin(data)
         if (rs.success) {
           dispatch(login({ isLoggedIn: true, token: rs.accessToken, current: rs.mes }))
-          navigate(`/${path.HOME}`)
+          searchParams.get('redirect') ? navigate(searchParams.get('redirect')) : navigate(`/${path.HOME}`)
         } else Swal.fire('Oops!', rs.mes, 'error')
       }
     }

@@ -7,7 +7,7 @@ const withBaseComponent = (Component) => (props) => {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  return <Component {...props} navigate={navigate} dispatch={dispatch} location ={location } />
+  return <Component {...props} navigate={navigate} dispatch={dispatch} location={location} />
 }
 
 export default withBaseComponent
