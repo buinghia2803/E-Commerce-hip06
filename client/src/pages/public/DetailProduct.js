@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { createSearchParams, useParams } from 'react-router-dom'
 import { apiGetProduct, apiGetProducts, apiUpdateCart } from '../../apis'
 import { Breadcrumb, Button, SelectQuantity, ProductExtraInfoItem, ProductInformation, CustomSlider } from '../../components'
@@ -24,9 +24,10 @@ var settings = {
 };
 
 
-const DetailProduct = ({ isQuickView, data, location,dispatch,navigate }) => {
+const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
+  const titleRef = useRef()
   const params = useParams()
-  const {current} = useSelector(state=>state.user)
+  const { current } = useSelector(state => state.user)
   const [product, setProduct] = useState(null)
   const [currentImage, setCurrentImage] = useState(null)
   const [quantity, setQuantity] = useState(1)
@@ -75,8 +76,16 @@ const DetailProduct = ({ isQuickView, data, location,dispatch,navigate }) => {
         price: product?.varriants?.find(el => el.sku === varriant)?.price,
         thumb: product?.varriants?.find(el => el.sku === varriant)?.thumb,
       })
+    }else{
+      setCurrentProduct({
+        title: product?.title,
+        color: product?.color,
+        images: product?.images||[],
+        price: product?.price,
+        thumb: product?.thumb,
+      })
     }
-  }, [varriant])
+  }, [varriant, product])
 
   useEffect(() => {
     if (pid) {
@@ -84,6 +93,7 @@ const DetailProduct = ({ isQuickView, data, location,dispatch,navigate }) => {
       fetchProducts()
     }
     window.scrollTo(0, 0)
+    titleRef.current.scrollIntoView({block: 'center'})
   }, [pid])
 
   useEffect(() => {
@@ -124,21 +134,28 @@ const DetailProduct = ({ isQuickView, data, location,dispatch,navigate }) => {
     }).then((rs) => {
       if (rs.isConfirmed) navigate({
         pathname: `/${path.LOGIN}`,
-        search: createSearchParams({redirect: location.pathname}).toString()
+        search: createSearchParams({ redirect: location.pathname }).toString()
       })
     })
-    const response = await apiUpdateCart({ pid, color: currentProduct.color, quantity })
+    const response = await apiUpdateCart({
+      pid,
+      color: currentProduct.color || product?.color,
+      quantity,
+      price: currentProduct.price || product.price,
+      thumbnail: currentProduct.thumb || product.thumb,
+      title: currentProduct.title || product.title,
+    })
     if (response.success) {
       toast.success(response.mes)
       dispatch(getCurrent())
     }
-    else toast.success(response.mes)
+    else toast.error(response.mes)
   }
 
   return (
     <div className={clsx('w-full')}>
       {!isQuickView && <div className='h-[81px] flex items-center justify-center bg-gray-100'>
-        <div className='w-main'>
+        <div ref={titleRef} className='w-main'>
           <h3 className='font-semibold'>{currentProduct.title || product?.title}</h3>
           <Breadcrumb title={currentProduct.title || product?.title} category={category} />
         </div>
@@ -202,6 +219,7 @@ const DetailProduct = ({ isQuickView, data, location,dispatch,navigate }) => {
               </div>
               {product?.varriants?.map(el => (
                 <div
+                  key={el.sku}
                   onClick={() => setVarriant(el.sku)}
                   className={clsx('flex items-center gap-2 p-2 border cursor-pointer', varriant === el.sku && 'border-red-500')}
                 >

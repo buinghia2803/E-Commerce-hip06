@@ -4,7 +4,7 @@ import trending from 'assets/trending.png'
 import label from 'assets/new.png'
 import SelectOption from 'components/search/SelectOption'
 import icons from 'ultils/icons'
-import { Link } from "react-router-dom";
+import { Link, createSearchParams } from "react-router-dom";
 import withBaseComponent from 'hocs/withBaseComponent'
 import { showModal } from 'store/app/appSlice'
 import { DetailProduct } from 'pages/public'
@@ -18,7 +18,7 @@ import { BsFillCartCheckFill, BsFillCartPlusFill } from 'react-icons/bs'
 
 const { AiFillEye, BsCartPlus, BsFillSuitHeartFill } = icons
 
-const Product = ({ productData, isNew, normal, navigate, dispatch }) => {
+const Product = ({ productData, isNew, normal, navigate, dispatch, location }) => {
   const [iShowOption, setIShowOption] = useState(false)
   const { current } = useSelector(state => state.user)
   const handleClickOptions = async (e, flag) => {
@@ -32,14 +32,24 @@ const Product = ({ productData, isNew, normal, navigate, dispatch }) => {
         showCancelButton: true,
         confirmButtonText: 'GO login'
       }).then((rs) => {
-        if (rs.isConfirmed) navigate(`/${path.LOGIN}`)
+        if (rs.isConfirmed) navigate({
+          pathname: `/${path.LOGIN}`,
+          search: createSearchParams({ redirect: location.pathname }).toString()
+        })
       })
-      const response = await apiUpdateCart({ pid: productData._id, color: productData.color })
+      const response = await apiUpdateCart({
+        pid: productData?._id,
+        color: productData?.color,
+        quantity: 1,
+        price: productData?.price,
+        thumbnail: productData?.thumbnail,
+        title: productData?.title,
+      })
       if (response.success) {
         toast.success(response.mes)
         dispatch(getCurrent())
       }
-      else toast.success(response.mes)
+      else toast.error(response.mes)
     }
     if (flag === 'WISHLIST') console.log(123);
     if (flag === 'QUICK_VIEW') {
