@@ -3,12 +3,14 @@ import appSlice from './app/appSlice';
 import productSlice from './products/productSlice';
 import userSlice from './user/userSlice';
 import storage from 'redux-persist/lib/storage'
-import { persistReducer, persistStore, FLUSH,
+import {
+  persistReducer, persistStore, FLUSH,
   REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER, } from "redux-persist";
+  REGISTER,
+} from "redux-persist";
 
 const commonConfig = {
   key: 'shop/user',
@@ -17,7 +19,7 @@ const commonConfig = {
 
 const userConfig = {
   ...commonConfig,
-  whiteList: ['isLoggedIn', 'token', 'current']
+  whiteList: ['isLoggedIn', 'token', 'current', 'currentCart']
 }
 
 export const store = configureStore({
@@ -34,4 +36,4 @@ export const store = configureStore({
     }),
 });
 
-export const persistor =  persistStore(store)
+export const persistor = persistStore(store)
