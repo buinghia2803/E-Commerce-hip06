@@ -13,19 +13,24 @@ import {
 } from "redux-persist";
 
 const commonConfig = {
-  key: 'shop/user',
   storage
 }
 
 const userConfig = {
   ...commonConfig,
-  whiteList: ['isLoggedIn', 'token', 'current', 'currentCart']
+  whiteList: ['isLoggedIn', 'token', 'current', 'currentCart'],
+  key: "shop/user"
+}
+const productConfig = {
+  ...commonConfig,
+  whiteList: ['dealDaily'],
+  key: "shop/deal"
 }
 
 export const store = configureStore({
   reducer: {
     app: appSlice,
-    products: productSlice,
+    products: persistReducer(productConfig, productSlice),
     user: persistReducer(userConfig, userSlice)
   },
   middleware: (getDefaultMiddleware) =>

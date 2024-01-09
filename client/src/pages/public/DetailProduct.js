@@ -76,11 +76,11 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
         price: product?.varriants?.find(el => el.sku === varriant)?.price,
         thumb: product?.varriants?.find(el => el.sku === varriant)?.thumb,
       })
-    }else{
+    } else {
       setCurrentProduct({
         title: product?.title,
         color: product?.color,
-        images: product?.images||[],
+        images: product?.images || [],
         price: product?.price,
         thumb: product?.thumb,
       })
@@ -92,8 +92,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
       fetchProductData()
       fetchProducts()
     }
-    window.scrollTo(0, 0)
-    titleRef.current.scrollIntoView({block: 'center'})
+    titleRef.current.scrollIntoView({ block: 'center' })
   }, [pid])
 
   useEffect(() => {
@@ -155,8 +154,8 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
   return (
     <div className={clsx('w-full')}>
       {!isQuickView && <div className='h-[81px] flex items-center justify-center bg-gray-100'>
-        <div ref={titleRef} className='w-main'>
-          <h3 className='font-semibold'>{currentProduct.title || product?.title}</h3>
+        <div className='w-main'>
+          <h3 ref={titleRef} className='font-semibold'>{currentProduct.title || product?.title}</h3>
           <Breadcrumb title={currentProduct.title || product?.title} category={category} />
         </div>
       </div>}

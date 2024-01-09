@@ -8,17 +8,18 @@ import { Link, createSearchParams } from "react-router-dom";
 import withBaseComponent from 'hocs/withBaseComponent'
 import { showModal } from 'store/app/appSlice'
 import { DetailProduct } from 'pages/public'
-import { apiUpdateCart } from 'apis'
+import { apiUpdateCart, apiUpdateWishlist } from 'apis'
 import { toast } from 'react-toastify'
 import { getCurrent } from 'store/user/asyncActions'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import path from 'ultils/path'
 import { BsFillCartCheckFill, BsFillCartPlusFill } from 'react-icons/bs'
+import clsx from 'clsx'
 
 const { AiFillEye, BsCartPlus, BsFillSuitHeartFill } = icons
 
-const Product = ({ productData, isNew, normal, navigate, dispatch, location }) => {
+const Product = ({ productData, isNew, normal, navigate, dispatch, location, pid, className }) => {
   const [iShowOption, setIShowOption] = useState(false)
   const { current } = useSelector(state => state.user)
   const handleClickOptions = async (e, flag) => {
@@ -42,7 +43,7 @@ const Product = ({ productData, isNew, normal, navigate, dispatch, location }) =
         color: productData?.color,
         quantity: 1,
         price: productData?.price,
-        thumbnail: productData?.thumbnail,
+        thumbnail: productData?.thumb,
         title: productData?.title,
       })
       if (response.success) {
@@ -51,13 +52,19 @@ const Product = ({ productData, isNew, normal, navigate, dispatch, location }) =
       }
       else toast.error(response.mes)
     }
-    if (flag === 'WISHLIST') console.log(123);
+    if (flag === 'WISHLIST') {
+      const response = await apiUpdateWishlist(pid)
+      if (response.success) {
+        dispatch(getCurrent())
+        toast.success(response.mes)
+      } else toast.error(response.mes)
+    }
     if (flag === 'QUICK_VIEW') {
       dispatch(showModal({ isShowModal: true, modalChildren: <DetailProduct data={{ pid: productData?._id, category: productData?.category }} isQuickView /> }))
     }
   }
   return (
-    <div className='w-full text-base px-[10px]'>
+    <div className={clsx('w-full text-base px-[10px]', className)}>
       <div
         onMouseEnter={e => {
           e.stopPropagation()
@@ -76,7 +83,7 @@ const Product = ({ productData, isNew, normal, navigate, dispatch, location }) =
             {current?.cart?.some(el => el.product === productData._id.toString())
               ? <span title='Added to cart'><SelectOption icons={<BsFillCartCheckFill color='green' />} /></span>
               : <span title='Add to cart' onClick={(e) => handleClickOptions(e, 'CART')}><SelectOption icons={<BsFillCartPlusFill />} /></span>}
-            <span title='Add wishlist' onClick={(e) => handleClickOptions(e, 'WISHLIST')}><SelectOption icons={<BsFillSuitHeartFill />} /></span>
+            <span title='Add wishlist' onClick={(e) => handleClickOptions(e, 'WISHLIST')}><SelectOption icons={<BsFillSuitHeartFill color={current?.wishlist?.some(i => i._id === pid) ? 'red' : 'gray'} />} /></span>
           </div>}
           <img
             src={productData?.thumb || 'https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png'}

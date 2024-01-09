@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { Sidebar, Banner, BestSeller, DealDaily, FeatureProducts, Product, CustomSlider } from '../../components'
 import { useSelector } from 'react-redux'
 import icons from '../../ultils/icons'
+import withBaseComponent from 'hocs/withBaseComponent'
+import { createSearchParams } from 'react-router-dom'
 
 const { IoIosArrowForward } = icons
 
-const Home = () => {
+const Home = ({ navigate }) => {
   const { newProducts } = useSelector(state => state.products)
   const { categories } = useSelector(state => state.app)
   const { isLoggedIn, current } = useSelector(state => state.user)
-  console.log({ isLoggedIn, current });
 
   return (
     <>
@@ -23,16 +24,16 @@ const Home = () => {
           <BestSeller />
         </div>
       </div>
-      <div className='my-8'>
+      <div className='my-8 w-main auto'>
         <FeatureProducts />
       </div>
-      <div className='my-8 w-full'>
+      <div className='my-8 w-main auto'>
         <h3 className='text-[20px] font-semibold py-[15px] border-b-2 border-main'>NEW ARRIVALS</h3>
         <div className='mt-4 mx-[-10px]'>
           <CustomSlider products={newProducts} />
         </div>
       </div>
-      <div className='my-8 w-full'>
+      <div className='my-8 w-main auto'>
         <h3 className='text-[20px] font-semibold py-[15px] border-b-2 border-main'>HOT COLLECTIONS</h3>
         <div className='flex flex-wrap gap-4 mt-4'>
           {categories?.filter(el => el.brand.length > 0)?.map(el => (
@@ -46,7 +47,14 @@ const Home = () => {
                   <h4 className='font-semibold uppercase'>{el.title}</h4>
                   <ul className='text-sm'>
                     {el?.brand?.map(item => (
-                      <span key={item} className='flex gap-1 items-center text-gray-500'>
+                      <span
+                        key={item}
+                        className='cursor-pointer hover:underline flex gap-1 items-center text-gray-500'
+                        onClick={() => navigate({
+                          pathname: `/${el.title}`,
+                          search: createSearchParams({ brand: item }).toString()
+                        })}
+                      >
                         <IoIosArrowForward size={14} />
                         <li>{item}</li>
                       </span>
@@ -58,11 +66,11 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <div className='my-8 w-full'>
+      <div className='my-8 w-main auto'>
         <h3 className='text-[20px] font-semibold py-[15px] border-b-2 border-main'>BLOG POSTS</h3>
       </div>
     </>
   )
 }
 
-export default Home
+export default withBaseComponent(Home)
